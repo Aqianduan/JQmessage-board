@@ -1,0 +1,72 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>JQ留言</title>
+<meta name="keywords" content="">
+<meta name="description" content="">
+<link rel="stylesheet" href="reset.css">
+<link rel="stylesheet" href="index.css">
+</head>
+<body>
+<div id="out">
+	<div>姓名：<input type="text" id="text1"></div>
+	<div>内容：<textarea id="text2"></textarea></div>
+	<div id="txt">还可以输入<span id="number">200</span>个字</div>
+	<div><input type="button" value="发布留言" id="text3"></div>
+	<div>
+		<h3>显示留言</h3>
+		<ul id="list">
+			<!-- <li>
+				<h6>张三<a href="javascript:;">X</a></h6>
+				<p>今天去你家玩</p>
+			</li> -->
+		</ul>
+	</div>
+</div>
+</body>
+<script type="text/javascript" src="jquery-1.8.3.min.js"></script>
+<script>
+$(function (){
+	$('#text3').click(function (){
+		if ($('#text2').val().length>200) {
+			$('#text2').val($('#text2').val().substr(0,200));
+		};
+		if ($('#text1').val()==''||$('#text2').val()==''){
+			alert('亲，你还没有输入名字或者内容');
+		} else{
+			var str='<li style="display:none;"><h6>'+$('#text1').val()+'<a href="javascript:;">X</a></h6><p>'+$('#text2').val()+'</p></li>';
+			$('#list').prepend(str);
+			$('#list li').slideDown();
+			$('#text1,#text2').val('');
+			$('#number').html('200');
+			$('#txt').css('color','#ccc');
+		}
+		$('#list a').click(function (){
+			var i=$(this).index();
+			$(this).parent().parent().slideUp(function (){
+				$(this).remove();
+			});
+		})
+	})
+	var time=null;
+	function jishu() {
+		var length=$('#text2').val().length;
+		var len=200;
+		len=len-length;
+		if (len<0) {
+			$('#txt').css('color','red');
+		} else{
+			$('#txt').css('color','#ccc');
+		};
+		$('#number').html(len);
+	}
+	$('#text2').focus(function (){
+		time=setInterval(jishu,50);
+	})
+	$('#text2').blur(function (){
+		clearInterval(time);
+	})
+})
+</script>
+</html>
